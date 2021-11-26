@@ -1,0 +1,30 @@
+version: "3"
+services:
+  dev_container:
+    build:
+      args:
+        VARIANT: buster
+      context: "."
+    volumes:
+      - ..:/workspace:cached
+    cap_add:
+      - SYS_PTRACE
+    init: true
+    security_opt:
+      - seccomp:unconfined
+    networks:
+      - common
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: dev
+    command: /bin/sh -c "while sleep 1000; do :; done"
+  postgres:
+    image: postgres:14.0-alpine
+    environment:
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: dev
+    networks:
+      - common
+networks:
+  common:
