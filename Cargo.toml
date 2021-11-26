@@ -1,0 +1,13 @@
+[package]
+name = "postgres-sql-migration-base"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+diesel = { version = "1", features = ["postgres"] }
+diesel_migrations = { version = "1", features = ["postgres"] }
+tera = "1"
+globwalk = "0"
+signal-hook = "0"
