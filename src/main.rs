@@ -78,7 +78,7 @@ fn main() {
 
     let mut counter = 0;
 
-    let mut connection: Option<ConnectionType> = Option::None;
+    let connection: Option<ConnectionType>;
 
     loop {
         if term.load(Ordering::Relaxed) {
@@ -115,11 +115,7 @@ fn main() {
 
     run_pending_migrations_in_directory(
         &connection,
-        std::env::temp_dir()
-            .join("migrations")
-            .canonicalize()
-            .unwrap()
-            .as_path(),
+        std::env::temp_dir().join("migrations").as_path(),
         &mut std::io::stdout(),
     )
     .unwrap_or_else(|err| panic!("Error on migration {:?}", err));

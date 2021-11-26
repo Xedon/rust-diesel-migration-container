@@ -11,3 +11,6 @@ diesel_migrations = { version = "1", features = ["postgres"] }
 tera = "1"
 globwalk = "0"
 signal-hook = "0"
+
+[dev-dependencies]
+assert_cli = "0.6.3"
