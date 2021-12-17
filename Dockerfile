@@ -4,11 +4,12 @@ RUN apt update \
 
 WORKDIR /build
 
-RUN cargo init --name dummy
+COPY Cargo.toml Cargo.lock ./
 
-COPY Cargo.toml Cargo.lock .
-
+RUN echo 'fn main() {}' > dummy.rs
+RUN sed -i 's#src/main.rs#dummy.rs#' Cargo.toml
 RUN cargo build --release
+RUN sed -i 's#dummy.rs#src/main.rs#' Cargo.toml
 
 COPY src/ src/
 
@@ -26,10 +27,10 @@ RUN apt update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /migration
+WORKDIR /migrator
 # Copy diesel_cli from previous build
-COPY --from=builder /build/target/release/postgres-sql-migration-base /migrator/app
+COPY --from=builder /build/target/release/app app
 #Allows to run with lower privileges
-RUN chmod ugo+rx /migrator/app
+RUN chmod ugo+rx app
 
 ENTRYPOINT [ "/migrator/app" ]
